@@ -97,7 +97,13 @@ public class SudokuBoardTest {
 			randomColumnOfSecond= rand.nextInt(9);			
 		}
 		sboard.board[randomRowOfSecond][randomColumnOfSecond] = randomNumber;
-		assertTrue(sboard.isCorrect());
+		sboard.display();
+		if(!sboard.blocksAreCorrect()) {
+			assertFalse(sboard.isCorrect());			
+		}
+		else {
+			assertTrue(sboard.isCorrect());
+		}
 	}
 	
 	@Test
@@ -115,11 +121,11 @@ public class SudokuBoardTest {
 		}
 		sboard.board[row][column] = randomNumber;
 		sboard.board[row][column + 1] = randomNumber;
-		sboard.display();
 		assertTrue(sboard.columnIsCorrect(column));
 		assertTrue(sboard.columnIsCorrect(column + 1));
 		assertFalse(sboard.rowIsCorrect(row));
 		assertFalse(sboard.blockIsCorrect(row, column));
+		assertFalse(sboard.isCorrect());
 	}
 	
 }

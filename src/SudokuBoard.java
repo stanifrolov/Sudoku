@@ -27,6 +27,72 @@ public class SudokuBoard {
 		}
 	}
 	
+	public boolean isCorrect() {
+		List<Integer> appearedRowNumbers =  new ArrayList<Integer>();
+		List<Integer> appearedColumnNumbers = new ArrayList<Integer>();
+		boolean rowNumberIsValid, columnNumberIsValid, rowNumberIsDuplicate, columnNumberIsDuplicate;
+		for(int i = 0; i < 9; i++) {
+			for(int j = 0; j < 9; j++) {
+				rowNumberIsValid = this.possibleNumbers.contains(this.board[i][j]);
+				rowNumberIsDuplicate = appearedRowNumbers.contains(this.board[i][j]);
+				if(rowNumberIsValid && !rowNumberIsDuplicate) {
+					if(this.board[i][j] != 0)
+						appearedRowNumbers.add(this.board[i][j]);
+				}
+				else {
+					return false;
+				}
+				columnNumberIsValid = this.possibleNumbers.contains(this.board[j][i]);
+				columnNumberIsDuplicate = appearedColumnNumbers.contains(this.board[j][i]);
+				if(columnNumberIsValid && !columnNumberIsDuplicate) {
+					if(this.board[j][i] != 0)
+						appearedColumnNumbers.add(this.board[j][i]);
+				}
+				else {
+					return false;
+				}
+			}
+			appearedRowNumbers.clear();
+			appearedColumnNumbers.clear();
+		}
+		return (true && blocksAreCorrect());
+	}
+	
+	public boolean blocksAreCorrect() {
+		boolean blocksAreCorrect = true;
+		for(int i = 0; i < 9; i = i + 3) {
+			for(int j = 0; j < 9; j = j + 3) {
+				blocksAreCorrect = blocksAreCorrect && blockIsCorrect(i,j);
+				if(!blocksAreCorrect)
+					return false;
+			}
+		}
+		return true;
+	}
+	
+
+	public boolean blockIsCorrect(int row, int column) {
+		int rowStart = 3*Math.round(row/3);
+		int columnStart = 3*Math.round(column/3);
+		List<Integer> listOfAppearedNumbers = new ArrayList<Integer>();
+		boolean numberIsValid, numberIsDuplicate;
+		for(int i = rowStart; i < rowStart + 3; i++) {
+			for(int j = columnStart; j < columnStart + 3; j++) {
+				numberIsValid = this.possibleNumbers.contains(this.board[i][j]);
+				numberIsDuplicate = listOfAppearedNumbers.contains(this.board[i][j]);
+				if(numberIsValid && !numberIsDuplicate) {
+					if(this.board[i][j] != 0)
+						listOfAppearedNumbers.add(this.board[i][j]);
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+
 	public boolean rowIsCorrect(int row) {
 		List<Integer> appearedRowNumbers =  new ArrayList<Integer>();
 		boolean rowNumberIsValid, rowNumberIsDuplicate;
@@ -61,58 +127,5 @@ public class SudokuBoard {
 		}
 		return true;
 	}
-	
-	public boolean isCorrect() {
-		List<Integer> appearedRowNumbers =  new ArrayList<Integer>();
-		List<Integer> appearedColumnNumbers = new ArrayList<Integer>();
-		boolean rowNumberIsValid, columnNumberIsValid, rowNumberIsDuplicate, columnNumberIsDuplicate;
-		for(int i = 0; i < 9; i++) {
-			for(int j = 0; j < 9; j++) {
-				rowNumberIsValid = this.possibleNumbers.contains(this.board[i][j]);
-				rowNumberIsDuplicate = appearedRowNumbers.contains(this.board[i][j]);
-				if(rowNumberIsValid && !rowNumberIsDuplicate) {
-					if(this.board[i][j] != 0)
-						appearedRowNumbers.add(this.board[i][j]);
-				}
-				else {
-					return false;
-				}
-				columnNumberIsValid = this.possibleNumbers.contains(this.board[j][i]);
-				columnNumberIsDuplicate = appearedColumnNumbers.contains(this.board[j][i]);
-				if(columnNumberIsValid && !columnNumberIsDuplicate) {
-					if(this.board[j][i] != 0)
-						appearedColumnNumbers.add(this.board[j][i]);
-				}
-				else {
-					return false;
-				}
-			}
-			appearedRowNumbers.clear();
-			appearedColumnNumbers.clear();
-		}
-		return true;
-	}
-
-	
-	public boolean blockIsCorrect(int row, int column) {
-		int rowStart = 3*Math.round(row/3);
-		int columnStart = 3*Math.round(column/3);
-		List<Integer> listOfAppearedNumbers = new ArrayList<Integer>();
-		boolean numberIsValid, numberIsDuplicate;
-		for(int i = rowStart; i < rowStart + 3; i++) {
-			for(int j = columnStart; j < columnStart + 3; j++) {
-				numberIsValid = this.possibleNumbers.contains(this.board[i][j]);
-				numberIsDuplicate = listOfAppearedNumbers.contains(this.board[i][j]);
-				if(numberIsValid && !numberIsDuplicate) {
-					if(this.board[i][j] != 0)
-						listOfAppearedNumbers.add(this.board[i][j]);
-				}
-				else {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
+			
 }
