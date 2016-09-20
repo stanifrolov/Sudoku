@@ -3,108 +3,94 @@ import java.util.List;
 
 public class SudokuBoard {
 	
-	public SudokuBlock[][] board;
-	public List<Integer> listOfPossibleNumbers;
+	public int[][] board;
+	public List<Integer> possibleNumbers;
 	
 	public SudokuBoard() {
-		create();
-	}
-
-	public void create() {
-		this.board = new SudokuBlock[3][3];
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				this.board[i][j] = new SudokuBlock();
-			}
-		}
-		listOfPossibleNumbers = new ArrayList<Integer>();
+		this.board = new int[9][9];
+		possibleNumbers = new ArrayList<Integer>();
 		for(int i = 0; i < 10; i++) {
-			this.listOfPossibleNumbers.add(i);
+			this.possibleNumbers.add(i);
 		}
 	}
 	
 	public void display() {
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				for(int m = 0; m < 3; m++) {
-					for(int n = 0; n < 3; n++) {
-						System.out.print(this.board[i][m].block[j][n]);
-					}
+		for(int i = 0; i < 9; i++) {
+			for(int j = 0; j < 9; j++) {
+				System.out.print(this.board[i][j]);
+				if((j + 1) % 3 == 0)
 					System.out.print(' ');
-				}
-				System.out.println();
 			}
 			System.out.println();
+			if((i+1) % 3 == 0)
+				System.out.println();
 		}
+	}
+	
+	public boolean rowIsCorrect(int row) {
+		List<Integer> appearedRowNumbers =  new ArrayList<Integer>();
+		boolean rowNumberIsValid, rowNumberIsDuplicate;
+		for(int j = 0; j < 9; j++) {
+			rowNumberIsValid = this.possibleNumbers.contains(this.board[row][j]);
+			rowNumberIsDuplicate = appearedRowNumbers.contains(this.board[row][j]);
+			if(rowNumberIsValid && !rowNumberIsDuplicate) {
+				if(this.board[row][j] != 0)
+					appearedRowNumbers.add(this.board[row][j]);
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean columnIsCorrect(int column) {
+		
+		List<Integer> appearedColumnNumbers =  new ArrayList<Integer>();
+		boolean columnNumberIsValid, columnNumberIsDuplicate;
+		for(int i = 0; i < 9; i++) {
+			columnNumberIsValid = this.possibleNumbers.contains(this.board[i][column]);
+			columnNumberIsDuplicate = appearedColumnNumbers.contains(this.board[i][column]);
+			if(columnNumberIsValid && !columnNumberIsDuplicate) {
+				if(this.board[i][column] != 0)
+					appearedColumnNumbers.add(this.board[i][column]);
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public boolean isCorrect() {
-		return (blocksAreCorrect() && rowsAreCorrect() && columnsAreCorrect());
-		
-	}
-	
-	public boolean blocksAreCorrect() {
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				if(!this.board[i][j].isCorrect())
+		List<Integer> appearedRowNumbers =  new ArrayList<Integer>();
+		List<Integer> appearedColumnNumbers = new ArrayList<Integer>();
+		boolean rowNumberIsValid, columnNumberIsValid, rowNumberIsDuplicate, columnNumberIsDuplicate;
+		for(int i = 0; i < 9; i++) {
+			for(int j = 0; j < 9; j++) {
+				rowNumberIsValid = this.possibleNumbers.contains(this.board[i][j]);
+				rowNumberIsDuplicate = appearedRowNumbers.contains(this.board[i][j]);
+				if(rowNumberIsValid && !rowNumberIsDuplicate) {
+					if(this.board[i][j] != 0)
+						appearedRowNumbers.add(this.board[i][j]);
+				}
+				else {
 					return false;
-			}
-		}
-		return true;
-	}
-	
-	public boolean rowsAreCorrect() {
-		List<Integer> listOfAppearedNumbers = new ArrayList<Integer>();
-		boolean numberIsValid, numberIsDuplicate;
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				for(int m = 0; m < 3; m++) {
-					for(int n = 0; n < 3; n++) {
-						numberIsValid = this.listOfPossibleNumbers.contains(this.board[i][m].block[j][n]);
-						numberIsDuplicate = listOfAppearedNumbers.contains(this.board[i][m].block[j][n]);
-						if(numberIsValid && !numberIsDuplicate) {
-							if(this.board[i][j].block[m][n] != 0)
-								listOfAppearedNumbers.add(this.board[i][m].block[j][n]);
-						}
-						else {
-							return false;
-						}
-					}
 				}
-				listOfAppearedNumbers.clear();
-			}
-		}
-		return true;
-	}
-	
-	public boolean columnsAreCorrect() {
-		List<Integer> listOfAppearedNumbers = new ArrayList<Integer>();
-		boolean numberIsValid, numberIsDuplicate;
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				for(int m = 0; m < 3; m++) {
-					for(int n = 0; n < 3; n++) {
-						numberIsValid = this.listOfPossibleNumbers.contains(this.board[m][i].block[n][j]);
-						numberIsDuplicate = listOfAppearedNumbers.contains(this.board[m][i].block[n][j]);
-						if(numberIsValid && !numberIsDuplicate) {
-							if(this.board[m][i].block[n][j] != 0)
-								listOfAppearedNumbers.add(this.board[m][i].block[n][j]);
-						}
-						else {
-							return false;
-						}
-					}
+				columnNumberIsValid = this.possibleNumbers.contains(this.board[j][i]);
+				columnNumberIsDuplicate = appearedColumnNumbers.contains(this.board[j][i]);
+				if(columnNumberIsValid && !columnNumberIsDuplicate) {
+					if(this.board[j][i] != 0)
+						appearedColumnNumbers.add(this.board[j][i]);
 				}
-				listOfAppearedNumbers.clear();
+				else {
+					return false;
+				}
 			}
+			appearedRowNumbers.clear();
+			appearedColumnNumbers.clear();
 		}
 		return true;
 	}
-
 	
-
-
-	
-	
-
 }
