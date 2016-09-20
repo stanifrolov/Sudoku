@@ -92,5 +92,27 @@ public class SudokuBoard {
 		}
 		return true;
 	}
+
+	
+	public boolean blockIsCorrect(int row, int column) {
+		int rowStart = 3*Math.round(row/3);
+		int columnStart = 3*Math.round(column/3);
+		List<Integer> listOfAppearedNumbers = new ArrayList<Integer>();
+		boolean numberIsValid, numberIsDuplicate;
+		for(int i = rowStart; i < rowStart + 3; i++) {
+			for(int j = columnStart; j < columnStart + 3; j++) {
+				numberIsValid = this.possibleNumbers.contains(this.board[i][j]);
+				numberIsDuplicate = listOfAppearedNumbers.contains(this.board[i][j]);
+				if(numberIsValid && !numberIsDuplicate) {
+					if(this.board[i][j] != 0)
+						listOfAppearedNumbers.add(this.board[i][j]);
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 	
 }
