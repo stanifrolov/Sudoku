@@ -3,7 +3,7 @@ package sudoku;
 public class Main {
 
 	public static void main(String[] args) {
-		 SudokuGridLayout layout = new SudokuGridLayout();
-		 layout.showLayout();
+		 Sudoku sudoku = new Sudoku();
+		 sudoku.startSudoku();
 	}
 }

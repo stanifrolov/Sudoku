@@ -9,25 +9,24 @@ import static sudoku.Constants.NUMBER_OF_COLUMNS;
 public class SudokuChecker {
 	
 	public int[][] board = new int[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
-	public List<Integer> possibleNumbers;
+	public List<Integer> possibleNumbers = new ArrayList<Integer>();
 	
 	public SudokuChecker() {
 		setupListOfPossibleNumbers();
 	}
 
 	public void setupListOfPossibleNumbers() {
-		possibleNumbers = new ArrayList<Integer>();
 		for(int i = 0; i < 10; i++) {
 			this.possibleNumbers.add(i);
 		}
 	}
 
 	public void setupBoard() {
-		SudokuGridLayout layout = new SudokuGridLayout();
+		Sudoku sudoku = new Sudoku();
 		int cellNumber = 0;
 		for(int i = 0; i < NUMBER_OF_ROWS; i++) {
 			for(int j = 0; j < NUMBER_OF_COLUMNS; j++) {				
-				this.board[i][j] = Integer.parseInt((layout.cellButton[cellNumber].getText()));
+				this.board[i][j] = sudoku.getCellValue(cellNumber);
 				cellNumber++;
 			}
 		}
@@ -76,7 +75,6 @@ public class SudokuChecker {
 		return true;
 	}
 	
-
 	public boolean blockIsCorrect(int row, int column) {
 		int rowStart = 3*Math.round(row/3);
 		int columnStart = 3*Math.round(column/3);
@@ -97,7 +95,6 @@ public class SudokuChecker {
 		}
 		return true;
 	}
-	
 
 	public boolean rowIsCorrect(int row) {
 		List<Integer> appearedRowNumbers =  new ArrayList<Integer>();

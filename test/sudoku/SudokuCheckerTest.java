@@ -8,39 +8,39 @@ import org.junit.Test;
 
 public class SudokuCheckerTest {
 	
-	SudokuChecker sudokuBoard;
+	SudokuChecker sudokuChecker;
 	
 	@Before
 	public void setUp() {
-		sudokuBoard = new SudokuChecker();
+		sudokuChecker = new SudokuChecker();
 	}
 
 	@Test
 	public void testRowsHaveDuplicate() {
-		sudokuBoard.board[0][0] = 1;
-		sudokuBoard.board[0][1] = 1;
-		assertFalse(sudokuBoard.rowIsCorrect(0));
+		sudokuChecker.board[0][0] = 1;
+		sudokuChecker.board[0][1] = 1;
+		assertFalse(sudokuChecker.rowIsCorrect(0));
 	}
 	
 	@Test
 	public void testRowsWithoutDuplicate() {
-		sudokuBoard.board[0][0] = 1;
-		sudokuBoard.board[1][0] = 1;
-		assertTrue(sudokuBoard.rowIsCorrect(0));
+		sudokuChecker.board[0][0] = 1;
+		sudokuChecker.board[1][0] = 1;
+		assertTrue(sudokuChecker.rowIsCorrect(0));
 	}
 	
 	@Test
 	public void testColumsHaveDuplicate() {
-		sudokuBoard.board[0][0] = 1;
-		sudokuBoard.board[1][0] = 1;
-		assertFalse(sudokuBoard.columnIsCorrect(0));
+		sudokuChecker.board[0][0] = 1;
+		sudokuChecker.board[1][0] = 1;
+		assertFalse(sudokuChecker.columnIsCorrect(0));
 	}
 	
 	@Test
 	public void testColumsWithoutDuplicate() {
-		sudokuBoard.board[0][0] = 1;
-		sudokuBoard.board[1][1] = 1;
-		assertTrue(sudokuBoard.columnIsCorrect(0));
+		sudokuChecker.board[0][0] = 1;
+		sudokuChecker.board[1][1] = 1;
+		assertTrue(sudokuChecker.columnIsCorrect(0));
 		
 	}
 	
@@ -53,13 +53,13 @@ public class SudokuCheckerTest {
 		while(randomNumber == 0) {
 			randomNumber = rand.nextInt(10);			
 		}
-		sudokuBoard.board[randomRow][randomColumnOfFirst] = randomNumber;
+		sudokuChecker.board[randomRow][randomColumnOfFirst] = randomNumber;
 		int randomColumnOfSecond= rand.nextInt(9);
 		while(randomColumnOfFirst == randomColumnOfSecond) {
 			randomColumnOfSecond= rand.nextInt(9);			
 		}
-		sudokuBoard.board[randomRow][randomColumnOfSecond] = randomNumber;
-		assertFalse(sudokuBoard.rowIsCorrect(randomRow));
+		sudokuChecker.board[randomRow][randomColumnOfSecond] = randomNumber;
+		assertFalse(sudokuChecker.rowIsCorrect(randomRow));
 	}
 	
 	@Test
@@ -71,13 +71,13 @@ public class SudokuCheckerTest {
 		while(randomNumber == 0) {
 			randomNumber = rand.nextInt(10);			
 		}
-		sudokuBoard.board[randomRowOfFirst][randomColumn] = randomNumber;
+		sudokuChecker.board[randomRowOfFirst][randomColumn] = randomNumber;
 		int randomRowOfSecond= rand.nextInt(9);
 		while(randomRowOfFirst == randomRowOfSecond) {
 			randomRowOfSecond= rand.nextInt(9);			
 		}
-		sudokuBoard.board[randomRowOfSecond][randomColumn] = randomNumber;
-		assertFalse(sudokuBoard.columnIsCorrect(randomColumn));
+		sudokuChecker.board[randomRowOfSecond][randomColumn] = randomNumber;
+		assertFalse(sudokuChecker.columnIsCorrect(randomColumn));
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class SudokuCheckerTest {
 		}
 		int randomRowOfFirst = rand.nextInt(9);
 		int randomColumnOfFirst = rand.nextInt(9);
-		sudokuBoard.board[randomRowOfFirst][randomColumnOfFirst] = randomNumber;
+		sudokuChecker.board[randomRowOfFirst][randomColumnOfFirst] = randomNumber;
 		int randomRowOfSecond= rand.nextInt(9);
 		while(randomRowOfFirst == randomRowOfSecond) {
 			randomRowOfSecond= rand.nextInt(9);			
@@ -98,12 +98,12 @@ public class SudokuCheckerTest {
 		while(randomColumnOfFirst == randomColumnOfSecond) {
 			randomColumnOfSecond= rand.nextInt(9);			
 		}
-		sudokuBoard.board[randomRowOfSecond][randomColumnOfSecond] = randomNumber;
-		if(!sudokuBoard.blocksAreCorrect()) {
-			assertFalse(sudokuBoard.isCorrect());			
+		sudokuChecker.board[randomRowOfSecond][randomColumnOfSecond] = randomNumber;
+		if(!sudokuChecker.blocksAreCorrect()) {
+			assertFalse(sudokuChecker.isCorrect());			
 		}
 		else {
-			assertTrue(sudokuBoard.isCorrect());
+			assertTrue(sudokuChecker.isCorrect());
 		}
 	}
 	
@@ -119,22 +119,22 @@ public class SudokuCheckerTest {
 		while(column % 3 == 2) {
 			column = rand.nextInt(9);
 		}
-		sudokuBoard.board[row][column] = randomNumber;
-		sudokuBoard.board[row][column + 1] = randomNumber;
-		assertTrue(sudokuBoard.columnIsCorrect(column));
-		assertTrue(sudokuBoard.columnIsCorrect(column + 1));
-		assertFalse(sudokuBoard.rowIsCorrect(row));
-		assertFalse(sudokuBoard.blockIsCorrect(row, column));
-		assertFalse(sudokuBoard.isCorrect());
+		sudokuChecker.board[row][column] = randomNumber;
+		sudokuChecker.board[row][column + 1] = randomNumber;
+		assertTrue(sudokuChecker.columnIsCorrect(column));
+		assertTrue(sudokuChecker.columnIsCorrect(column + 1));
+		assertFalse(sudokuChecker.rowIsCorrect(row));
+		assertFalse(sudokuChecker.blockIsCorrect(row, column));
+		assertFalse(sudokuChecker.isCorrect());
 	}
 	
 	@Test
 	public void testSetupBoard() {
-		sudokuBoard.setupBoard();
+		sudokuChecker.setupBoard();
 		int cellNumber = 0;
 		for(int i = 0; i < Constants.NUMBER_OF_ROWS; i++) {
 			for(int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++) {
-				assertEquals(sudokuBoard.board[i][j], cellNumber);
+				assertEquals(sudokuChecker.board[i][j], cellNumber);
 				cellNumber++;
 			}
 		}

@@ -9,7 +9,7 @@ import static sudoku.Constants.NUMBER_OF_BOXES;
 import static sudoku.Constants.NUMBER_OF_CELLS;
 import static sudoku.Constants.ORDER_OF_SUDOKU;;
 
-public class SudokuGridLayout extends JFrame {
+public class Sudoku extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,21 +21,25 @@ public class SudokuGridLayout extends JFrame {
 	public JButton[] cellButton = new JButton[NUMBER_OF_CELLS];
 	private JButton checkSudokuButton = new JButton();
 
-	public SudokuGridLayout() { 
-		this.setTitle("Sudoku");
-		setup();
+	public void startSudoku() {
+		showLayout();
 	}
-
-	public void showLayout() {
+	
+	private void showLayout() {
 		this.setSize(900, 500);
 		this.setVisible(true);
 	}
-
+	
+	public Sudoku() { 
+		this.setTitle("Sudoku");
+		setup();
+	}
+	
 	private void setup() {
 		setupPanels();
 		setupSudokuBoard();
 		setupNavigation();
-	}
+	}	
 
 	private void setupPanels() {
 		gamePanel.setLayout(new java.awt.GridLayout(1, 2));
@@ -99,6 +103,14 @@ public class SudokuGridLayout extends JFrame {
 		return cellNumber/NUMBER_OF_BOXES;
 	}
 
+	public int getCellValue(int cellNumber) {
+		return Integer.parseInt(getCellText(cellNumber));
+	}
+
+	public String getCellText(int cellNumber) {
+		return cellButton[cellNumber].getText();
+	}
+	
 	class ButtonListener implements java.awt.event.ActionListener {
 
 		public void actionPerformed(java.awt.event.ActionEvent e) {
