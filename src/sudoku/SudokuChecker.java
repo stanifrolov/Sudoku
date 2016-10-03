@@ -1,30 +1,35 @@
 package sudoku;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SudokuBoard {
+import static sudoku.Constants.NUMBER_OF_ROWS;
+import static sudoku.Constants.NUMBER_OF_COLUMNS;
+
+public class SudokuChecker {
 	
-	public int[][] board;
+	public int[][] board = new int[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
 	public List<Integer> possibleNumbers;
 	
-	public SudokuBoard() {
-		this.board = new int[9][9];
+	public SudokuChecker() {
+		setupListOfPossibleNumbers();
+	}
+
+	public void setupListOfPossibleNumbers() {
 		possibleNumbers = new ArrayList<Integer>();
 		for(int i = 0; i < 10; i++) {
 			this.possibleNumbers.add(i);
 		}
 	}
-	
-	public void display() {
-		for(int i = 0; i < 9; i++) {
-			for(int j = 0; j < 9; j++) {
-				System.out.print(this.board[i][j]);
-				if((j + 1) % 3 == 0)
-					System.out.print(' ');
+
+	public void setupBoard() {
+		SudokuGridLayout layout = new SudokuGridLayout();
+		int cellNumber = 0;
+		for(int i = 0; i < NUMBER_OF_ROWS; i++) {
+			for(int j = 0; j < NUMBER_OF_COLUMNS; j++) {				
+				this.board[i][j] = Integer.parseInt((layout.cellButton[cellNumber].getText()));
+				cellNumber++;
 			}
-			System.out.println();
-			if((i+1) % 3 == 0)
-				System.out.println();
 		}
 	}
 	
@@ -32,8 +37,8 @@ public class SudokuBoard {
 		List<Integer> appearedRowNumbers =  new ArrayList<Integer>();
 		List<Integer> appearedColumnNumbers = new ArrayList<Integer>();
 		boolean rowNumberIsValid, columnNumberIsValid, rowNumberIsDuplicate, columnNumberIsDuplicate;
-		for(int i = 0; i < 9; i++) {
-			for(int j = 0; j < 9; j++) {
+		for(int i = 0; i < NUMBER_OF_ROWS; i++) {
+			for(int j = 0; j < NUMBER_OF_COLUMNS; j++) {
 				rowNumberIsValid = this.possibleNumbers.contains(this.board[i][j]);
 				rowNumberIsDuplicate = appearedRowNumbers.contains(this.board[i][j]);
 				if(rowNumberIsValid && !rowNumberIsDuplicate) {
@@ -61,8 +66,8 @@ public class SudokuBoard {
 	
 	public boolean blocksAreCorrect() {
 		boolean blocksAreCorrect = true;
-		for(int i = 0; i < 9; i = i + 3) {
-			for(int j = 0; j < 9; j = j + 3) {
+		for(int i = 0; i < NUMBER_OF_ROWS; i = i + 3) {
+			for(int j = 0; j < NUMBER_OF_COLUMNS; j = j + 3) {
 				blocksAreCorrect = blocksAreCorrect && blockIsCorrect(i,j);
 				if(!blocksAreCorrect)
 					return false;

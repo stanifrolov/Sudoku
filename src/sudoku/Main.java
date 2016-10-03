@@ -4,5 +4,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		 SudokuGridLayout layout = new SudokuGridLayout();
+		 layout.showLayout();
 	}
 }

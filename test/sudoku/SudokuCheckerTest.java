@@ -6,13 +6,13 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SudokuBoardTest {
+public class SudokuCheckerTest {
 	
-	SudokuBoard sudokuBoard;
+	SudokuChecker sudokuBoard;
 	
 	@Before
 	public void setUp() {
-		sudokuBoard = new SudokuBoard();
+		sudokuBoard = new SudokuChecker();
 	}
 
 	@Test
@@ -126,6 +126,18 @@ public class SudokuBoardTest {
 		assertFalse(sudokuBoard.rowIsCorrect(row));
 		assertFalse(sudokuBoard.blockIsCorrect(row, column));
 		assertFalse(sudokuBoard.isCorrect());
+	}
+	
+	@Test
+	public void testSetupBoard() {
+		sudokuBoard.setupBoard();
+		int cellNumber = 0;
+		for(int i = 0; i < Constants.NUMBER_OF_ROWS; i++) {
+			for(int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++) {
+				assertEquals(sudokuBoard.board[i][j], cellNumber);
+				cellNumber++;
+			}
+		}
 	}
 	
 }

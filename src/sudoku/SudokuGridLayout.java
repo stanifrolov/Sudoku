@@ -13,29 +13,31 @@ public class SudokuGridLayout extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private javax.swing.JPanel gamePanel = new javax.swing.JPanel();
-	private javax.swing.JPanel sudokuBoardPanel = new javax.swing.JPanel();
-	private javax.swing.JPanel[] sudokuBoxPanel = new javax.swing.JPanel[NUMBER_OF_BOXES];
-	private javax.swing.JPanel navigationPanel = new javax.swing.JPanel();
+	private JPanel gamePanel = new JPanel();
+	private JPanel sudokuBoardPanel = new JPanel();
+	private JPanel[] sudokuBoxPanel = new JPanel[NUMBER_OF_BOXES];
+	private JPanel navigationPanel = new JPanel();
 
-	private javax.swing.JButton[] button = new javax.swing.JButton[NUMBER_OF_CELLS];
+	public JButton[] cellButton = new JButton[NUMBER_OF_CELLS];
+	private JButton checkSudokuButton = new JButton();
 
 	public SudokuGridLayout() { 
 		this.setTitle("Sudoku");
-
 		setup();
+	}
 
+	public void showLayout() {
 		this.setSize(900, 500);
 		this.setVisible(true);
 	}
 
-	public void setup() {
+	private void setup() {
 		setupPanels();
 		setupSudokuBoard();
 		setupNavigation();
 	}
 
-	public void setupPanels() {
+	private void setupPanels() {
 		gamePanel.setLayout(new java.awt.GridLayout(1, 2));
 
 		setupSudokuBoardPanel();
@@ -44,28 +46,30 @@ public class SudokuGridLayout extends JFrame {
 		this.getContentPane().add(gamePanel);
 	}
 	
-	public void setupSudokuBoard() {
+	private void setupSudokuBoard() {
 		setupBoxPanel();
-		setupButtons();
+		setupCellButtons();
 	}
 	
-	public void setupNavigation() {
-		JButton newGameButton = new JButton("Check Sudoku");   
-		navigationPanel.add(newGameButton);
+	private void setupNavigation() {
+		ButtonListener buttonListener = new ButtonListener();
+		checkSudokuButton.setText("Check Sudoku");
+		checkSudokuButton.addActionListener(buttonListener);
+		navigationPanel.add(checkSudokuButton);
 	}
 	
-	public void setupSudokuBoardPanel() {
+	private void setupSudokuBoardPanel() {
 		sudokuBoardPanel.setLayout(new java.awt.GridLayout(ORDER_OF_SUDOKU, ORDER_OF_SUDOKU));
 		setSeperationOfBoxes();
 		gamePanel.add(sudokuBoardPanel);
 	}
 	
-	public void setupNavigationPanel() {
+	private void setupNavigationPanel() {
 		navigationPanel.setLayout(new java.awt.GridLayout(5, 1));
 		gamePanel.add(navigationPanel);
 	}
 	
-	public void setupBoxPanel() {
+	private void setupBoxPanel() {
 		for(int i = 0; i < NUMBER_OF_BOXES; i++) {        	
 			sudokuBoxPanel[i] = new JPanel();
 			sudokuBoxPanel[i].setLayout(new java.awt.GridLayout(ORDER_OF_SUDOKU, ORDER_OF_SUDOKU));
@@ -73,34 +77,37 @@ public class SudokuGridLayout extends JFrame {
 		}
 	}
 	
-	public void setupButtons() {
+	private void setupCellButtons() {
 		ButtonListener buttonListener = new ButtonListener();
 		int boxNumber;
 		for(int i = 0; i < NUMBER_OF_CELLS; i++) {
-			button[i] = new javax.swing.JButton(Integer.toString(i + 1));
-			button[i].addActionListener(buttonListener);
+			cellButton[i] = new javax.swing.JButton(Integer.toString(i));
+			cellButton[i].addActionListener(buttonListener);
 			
 			boxNumber = getBoxNumberFromCell(i);
-			sudokuBoxPanel[boxNumber].add(button[i]);
+			sudokuBoxPanel[boxNumber].add(cellButton[i]);
 		}
 	}
 
-	public void setSeperationOfBoxes() {
+	private void setSeperationOfBoxes() {
 		GridLayout sudokuBoardLayout = (GridLayout) sudokuBoardPanel.getLayout();
 		sudokuBoardLayout.setHgap(5);
 		sudokuBoardLayout.setVgap(5);
 	}
 
-	public int getBoxNumberFromCell(int cellNumber) {
+	private int getBoxNumberFromCell(int cellNumber) {
 		return cellNumber/NUMBER_OF_BOXES;
 	}
 
 	class ButtonListener implements java.awt.event.ActionListener {
 
 		public void actionPerformed(java.awt.event.ActionEvent e) {
+			if(e.getSource() == checkSudokuButton) {
+				System.out.println("Check Sudoku Button has been clicked.");
+			}
 			for (int i = 0; i < NUMBER_OF_CELLS; i++) {
-				if(e.getSource() == button[i]){
-					System.out.println("Button " + (i + 1) + " wurde geklickt.");
+				if(e.getSource() == cellButton[i]){
+					System.out.println("Button " + i + " has been clicked.");
 				}
 			}
 		}
