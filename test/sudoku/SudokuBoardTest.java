@@ -1,3 +1,4 @@
+package sudoku;
 import static org.junit.Assert.*;
 
 import java.util.Random;
@@ -97,7 +98,6 @@ public class SudokuBoardTest {
 			randomColumnOfSecond= rand.nextInt(9);			
 		}
 		sboard.board[randomRowOfSecond][randomColumnOfSecond] = randomNumber;
-		sboard.display();
 		if(!sboard.blocksAreCorrect()) {
 			assertFalse(sboard.isCorrect());			
 		}
