@@ -1,129 +1,167 @@
 package sudoku;
 
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import static sudoku.Constants.NUMBER_OF_BOXES;
-import static sudoku.Constants.NUMBER_OF_CELLS;
-import static sudoku.Constants.ORDER_OF_SUDOKU;;
+import static sudoku.Constants.*;
 
-public class Sudoku extends JFrame {
+class Sudoku extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+    static final long serialVersionUID = 1L;
 
-	private JPanel gamePanel = new JPanel();
-	private JPanel sudokuBoardPanel = new JPanel();
-	private JPanel[] sudokuBoxPanel = new JPanel[NUMBER_OF_BOXES];
-	private JPanel navigationPanel = new JPanel();
+    JPanel gamePanel = new JPanel();
+    JPanel sudokuBoardPanel = new JPanel();
+    JPanel[] sudokuBoxPanel = new JPanel[NUMBER_OF_BOXES];
+    JPanel navigationPanel = new JPanel();
 
-	public JButton[] cellButton = new JButton[NUMBER_OF_CELLS];
-	private JButton checkSudokuButton = new JButton();
+    JButton[] cellButton = new JButton[NUMBER_OF_CELLS];
+    JButton checkSudokuButton = new JButton();
 
-	public void startSudoku() {
-		showLayout();
-	}
-	
-	private void showLayout() {
-		this.setSize(900, 500);
-		this.setVisible(true);
-	}
-	
-	public Sudoku() { 
-		this.setTitle("Sudoku");
-		setup();
-	}
-	
-	private void setup() {
-		setupPanels();
-		setupSudokuBoard();
-		setupNavigation();
-	}	
+    void startSudoku() {
+        showLayout();
+    }
 
-	private void setupPanels() {
-		gamePanel.setLayout(new java.awt.GridLayout(1, 2));
+    void showLayout() {
+        this.setSize(900, 500);
+        this.setVisible(true);
+    }
 
-		setupSudokuBoardPanel();
-		setupNavigationPanel();
+    Sudoku() {
+        this.setTitle("Sudoku");
+        setup();
+    }
 
-		this.getContentPane().add(gamePanel);
-	}
-	
-	private void setupSudokuBoard() {
-		setupBoxPanel();
-		setupCellButtons();
-	}
-	
-	private void setupNavigation() {
-		ButtonListener buttonListener = new ButtonListener();
-		checkSudokuButton.setText("Check Sudoku");
-		checkSudokuButton.addActionListener(buttonListener);
-		navigationPanel.add(checkSudokuButton);
-	}
-	
-	private void setupSudokuBoardPanel() {
-		sudokuBoardPanel.setLayout(new java.awt.GridLayout(ORDER_OF_SUDOKU, ORDER_OF_SUDOKU));
-		setSeperationOfBoxes();
-		gamePanel.add(sudokuBoardPanel);
-	}
-	
-	private void setupNavigationPanel() {
-		navigationPanel.setLayout(new java.awt.GridLayout(5, 1));
-		gamePanel.add(navigationPanel);
-	}
-	
-	private void setupBoxPanel() {
-		for(int i = 0; i < NUMBER_OF_BOXES; i++) {        	
-			sudokuBoxPanel[i] = new JPanel();
-			sudokuBoxPanel[i].setLayout(new java.awt.GridLayout(ORDER_OF_SUDOKU, ORDER_OF_SUDOKU));
-			sudokuBoardPanel.add(sudokuBoxPanel[i]);
-		}
-	}
-	
-	private void setupCellButtons() {
-		ButtonListener buttonListener = new ButtonListener();
-		int boxNumber;
-		for(int i = 0; i < NUMBER_OF_CELLS; i++) {
-			cellButton[i] = new javax.swing.JButton(Integer.toString(i));
-			cellButton[i].addActionListener(buttonListener);
-			
-			boxNumber = getBoxNumberFromCell(i);
-			sudokuBoxPanel[boxNumber].add(cellButton[i]);
-		}
-	}
+    void setup() {
+        setupPanels();
+        setupSudokuBoard();
+        setupNavigation();
+    }
 
-	private void setSeperationOfBoxes() {
-		GridLayout sudokuBoardLayout = (GridLayout) sudokuBoardPanel.getLayout();
-		sudokuBoardLayout.setHgap(5);
-		sudokuBoardLayout.setVgap(5);
-	}
+    void setupPanels() {
+        gamePanel.setLayout(new java.awt.GridLayout(1, 2));
 
-	private int getBoxNumberFromCell(int cellNumber) {
-		return cellNumber/NUMBER_OF_BOXES;
-	}
+        setupSudokuBoardPanel();
+        setupNavigationPanel();
 
-	public int getCellValue(int cellNumber) {
-		return Integer.parseInt(getCellText(cellNumber));
-	}
+        this.getContentPane().add(gamePanel);
+    }
 
-	public String getCellText(int cellNumber) {
-		return cellButton[cellNumber].getText();
-	}
-	
-	class ButtonListener implements java.awt.event.ActionListener {
+    void setupSudokuBoard() {
+        setupBoxPanel();
+        setupCellButtons();
+    }
 
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			if(e.getSource() == checkSudokuButton) {
-				System.out.println("Check Sudoku Button has been clicked.");
-			}
-			for (int i = 0; i < NUMBER_OF_CELLS; i++) {
-				if(e.getSource() == cellButton[i]){
-					System.out.println("Button " + i + " has been clicked.");
-				}
-			}
-		}
+    void setupNavigation() {
+        ButtonListener buttonListener = new ButtonListener();
+        checkSudokuButton.setText("Check Sudoku");
+        checkSudokuButton.addActionListener(buttonListener);
+        navigationPanel.add(checkSudokuButton);
+    }
 
-	}
+    void setupSudokuBoardPanel() {
+        sudokuBoardPanel.setLayout(new GridLayout(ORDER_OF_SUDOKU, ORDER_OF_SUDOKU));
+        setSeparationOfBoxes();
+        gamePanel.add(sudokuBoardPanel);
+    }
+
+    void setupNavigationPanel() {
+        navigationPanel.setLayout(new GridLayout(5, 1));
+        gamePanel.add(navigationPanel);
+    }
+
+    void setupBoxPanel() {
+        for (int i = 0; i < NUMBER_OF_BOXES; i++) {
+            sudokuBoxPanel[i] = new JPanel();
+            sudokuBoxPanel[i].setLayout(new GridLayout(ORDER_OF_SUDOKU, ORDER_OF_SUDOKU));
+            sudokuBoardPanel.add(sudokuBoxPanel[i]);
+        }
+    }
+
+    void setupCellButtons() {
+        ButtonListener buttonListener = new ButtonListener();
+        int boxNumber;
+        for (int i = 0; i < NUMBER_OF_CELLS; i++) {
+            cellButton[i] = new JButton(Integer.toString(i));
+            cellButton[i].addActionListener(buttonListener);
+            cellButton[i].setText(" ");
+
+            final JPopupMenu menu = new JPopupMenu();
+            for (int j = 1; j < 10; j++) {
+                JButton btn = new JButton(Integer.toString(j));
+                btn.setActionCommand("number");
+                btn.addActionListener(buttonListener);
+                menu.add(btn);
+                int finalI1 = i;
+                int finalJ = j;
+                btn.addActionListener(ev -> {
+                    menu.setVisible(false);
+                    cellButton[finalI1].setText(Integer.toString(finalJ));
+                });
+            }
+
+            int finalI = i;
+            cellButton[i].addActionListener(ev -> {
+                menu.show(cellButton[finalI], 15, 15);
+            });
+
+            boxNumber = getBoxNumberFromCell(i);
+            sudokuBoxPanel[boxNumber].add(cellButton[i]);
+        }
+    }
+
+    void setSeparationOfBoxes() {
+        GridLayout sudokuBoardLayout = (GridLayout) sudokuBoardPanel.getLayout();
+        sudokuBoardLayout.setHgap(5);
+        sudokuBoardLayout.setVgap(5);
+    }
+
+    int getBoxNumberFromCell(int cellNumber) {
+        return cellNumber / NUMBER_OF_BOXES;
+    }
+
+    int getCellValue(int cellNumber) {
+        String cellValue = getCellText(cellNumber);
+        if (!cellValue.equals(" ")) {
+            return Integer.parseInt(getCellText(cellNumber));
+        } else {
+            return 0;
+        }
+    }
+
+    String getCellText(int cellNumber) {
+        return cellButton[cellNumber].getText();
+    }
+
+    Sudoku getOuter() {
+        return Sudoku.this;
+    }
+
+    class ButtonListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == checkSudokuButton) {
+//                System.out.println("Check Sudoku Button has been clicked.");
+                SudokuChecker sudokuChecker = new SudokuChecker();
+                sudokuChecker.setupBoard(getOuter());
+                if (sudokuChecker.isCorrect()) {
+                    System.out.println("Sudoku is correct.");
+                } else {
+                    System.out.println("Sudoku is not valid.");
+                }
+            }
+            if (e.getActionCommand().contentEquals("number")) {
+//                System.out.println("Number was clicked");
+
+            }
+            for (int i = 0; i < NUMBER_OF_CELLS; i++) {
+                if (e.getSource() == cellButton[i]) {
+//                    System.out.println("Button " + i + " has been clicked.");
+                }
+            }
+        }
+
+    }
 
 }
