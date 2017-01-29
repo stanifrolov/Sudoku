@@ -142,19 +142,19 @@ class Sudoku extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == checkSudokuButton) {
-//                System.out.println("Check Sudoku Button has been clicked.");
                 SudokuChecker sudokuChecker = new SudokuChecker();
                 sudokuChecker.setupBoard(getOuter());
                 if (sudokuChecker.isCorrect()) {
-                    System.out.println("Sudoku is correct.");
+                    System.out.println("Sudoku is valid.");
                 } else {
                     System.out.println("Sudoku is not valid.");
                 }
             }
+
             if (e.getActionCommand().contentEquals("number")) {
 //                System.out.println("Number was clicked");
-
             }
+
             for (int i = 0; i < NUMBER_OF_CELLS; i++) {
                 if (e.getSource() == cellButton[i]) {
 //                    System.out.println("Button " + i + " has been clicked.");
