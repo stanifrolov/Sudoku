@@ -43,10 +43,10 @@ class SudokuChecker {
     }
 
     boolean isCorrect() {
-        return blocksAreCorrect() && rowsAreCorrect();
+        return rowsAndColumnsAreCorrect() && blocksAreCorrect();
     }
 
-    boolean rowsAreCorrect() {
+    boolean rowsAndColumnsAreCorrect() {
         List<Integer> appearedRowNumbers = new ArrayList<>();
         boolean rowNumberIsValid, rowNumberIsDuplicate;
 
