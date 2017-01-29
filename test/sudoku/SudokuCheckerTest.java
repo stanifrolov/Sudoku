@@ -112,7 +112,6 @@ public class SudokuCheckerTest {
             assertFalse(sudokuChecker.blocksAreCorrect());
             assertFalse(sudokuChecker.isCorrect());
         } else {
-            sudokuChecker.printSudokuBoard();
             assertTrue(sudokuChecker.blocksAreCorrect());
             assertTrue(sudokuChecker.isCorrect());
         }
