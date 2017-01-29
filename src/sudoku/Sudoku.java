@@ -19,6 +19,11 @@ class Sudoku extends JFrame {
     JButton[] cellButton = new JButton[NUMBER_OF_CELLS];
     JButton checkSudokuButton = new JButton();
 
+    Sudoku() {
+        this.setTitle("Sudoku");
+        setup();
+    }
+
     void startSudoku() {
         showLayout();
     }
@@ -26,11 +31,6 @@ class Sudoku extends JFrame {
     void showLayout() {
         this.setSize(900, 500);
         this.setVisible(true);
-    }
-
-    Sudoku() {
-        this.setTitle("Sudoku");
-        setup();
     }
 
     void setup() {

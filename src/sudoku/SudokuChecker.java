@@ -43,24 +43,33 @@ class SudokuChecker {
     }
 
     boolean isCorrect() {
-        List<Integer> appearedRowNumbers = new ArrayList<Integer>();
-        List<Integer> appearedColumnNumbers = new ArrayList<Integer>();
-        boolean rowNumberIsValid, columnNumberIsValid, rowNumberIsDuplicate, columnNumberIsDuplicate;
-        for (int i = 0; i < NUMBER_OF_ROWS; i++) {
-            for (int j = 0; j < NUMBER_OF_COLUMNS; j++) {
-                rowNumberIsValid = rowNumberIsPossible(j, i);
-                rowNumberIsDuplicate = rowNumberIsDuplicate(i, j, appearedRowNumbers);
+        return blocksAreCorrect() && rowsAreCorrect();
+    }
+
+    boolean rowsAreCorrect() {
+        List<Integer> appearedRowNumbers = new ArrayList<>();
+        boolean rowNumberIsValid, rowNumberIsDuplicate;
+
+        List<Integer> appearedColumnNumbers = new ArrayList<>();
+        boolean columnNumberIsValid, columnNumberIsDuplicate;
+
+        for (int row = 0; row < NUMBER_OF_ROWS; row++) {
+            for (int column = 0; column < NUMBER_OF_COLUMNS; column++) {
+                rowNumberIsValid = rowNumberIsPossible(column, row);
+                rowNumberIsDuplicate = rowNumberIsDuplicate(row, column, appearedRowNumbers);
                 if (rowNumberIsValid && !rowNumberIsDuplicate) {
-                    if (this.board[i][j] != 0)
-                        appearedRowNumbers.add(this.board[i][j]);
+                    if (this.board[row][column] != 0) {
+                        appearedRowNumbers.add(this.board[row][column]);
+                    }
                 } else {
                     return false;
                 }
-                columnNumberIsValid = columnNumberIsPossible(i, j);
-                columnNumberIsDuplicate = columnNumberIsDuplicate(i, j, appearedColumnNumbers);
+
+                columnNumberIsValid = columnNumberIsPossible(column, row);
+                columnNumberIsDuplicate = columnNumberIsDuplicate(column, row, appearedColumnNumbers);
                 if (columnNumberIsValid && !columnNumberIsDuplicate) {
-                    if (this.board[j][i] != 0)
-                        appearedColumnNumbers.add(this.board[j][i]);
+                    if (this.board[column][row] != 0)
+                        appearedColumnNumbers.add(this.board[column][row]);
                 } else {
                     return false;
                 }
@@ -68,16 +77,17 @@ class SudokuChecker {
             appearedRowNumbers.clear();
             appearedColumnNumbers.clear();
         }
-        return (blocksAreCorrect());
+        return true;
     }
 
     boolean blocksAreCorrect() {
-        boolean blocksAreCorrect = true;
-        for (int i = 0; i < NUMBER_OF_ROWS; i = i + 3) {
-            for (int j = 0; j < NUMBER_OF_COLUMNS; j = j + 3) {
-                blocksAreCorrect = blocksAreCorrect && blockIsCorrect(i, j);
-                if (!blocksAreCorrect)
+        boolean blocksAreCorrect;
+        for (int row = 0; row < NUMBER_OF_ROWS; row = row + 3) {
+            for (int column = 0; column < NUMBER_OF_COLUMNS; column = column + 3) {
+                blocksAreCorrect = blockIsCorrect(row, column);
+                if (!blocksAreCorrect) {
                     return false;
+                }
             }
         }
         return true;
@@ -86,7 +96,7 @@ class SudokuChecker {
     boolean blockIsCorrect(int row, int column) {
         int rowStart = 3 * Math.round(row / 3);
         int columnStart = 3 * Math.round(column / 3);
-        List<Integer> listOfAppearedNumbers = new ArrayList<Integer>();
+        List<Integer> listOfAppearedNumbers = new ArrayList<>();
         boolean numberIsValid, numberIsDuplicate;
         for (int i = rowStart; i < rowStart + 3; i++) {
             for (int j = columnStart; j < columnStart + 3; j++) {
@@ -104,7 +114,7 @@ class SudokuChecker {
     }
 
     boolean rowIsCorrect(int row) {
-        List<Integer> appearedRowNumbers = new ArrayList<Integer>();
+        List<Integer> appearedRowNumbers = new ArrayList<>();
         boolean rowNumberIsValid, rowNumberIsDuplicate;
         for (int column = 0; column < NUMBER_OF_COLUMNS; column++) {
             rowNumberIsValid = rowNumberIsPossible(row, column);
@@ -128,7 +138,8 @@ class SudokuChecker {
     }
 
     boolean columnIsCorrect(int column) {
-        List<Integer> appearedColumnNumbers = new ArrayList<Integer>();
+        List<Integer> appearedColumnNumbers;
+        appearedColumnNumbers = new ArrayList<>();
         boolean columnNumberIsPossible, columnNumberIsDuplicate;
         for (int row = 0; row < NUMBER_OF_ROWS; row++) {
             columnNumberIsPossible = columnNumberIsPossible(row, column);
@@ -149,6 +160,15 @@ class SudokuChecker {
 
     boolean columnNumberIsPossible(int row, int column) {
         return this.possibleNumbers.contains(this.board[row][column]);
+    }
+
+    void printSudokuBoard() {
+        for (int row = 0; row < NUMBER_OF_ROWS; row++) {
+            for (int column = 0; column < NUMBER_OF_COLUMNS; column++) {
+                System.out.print(board[row][column]);
+            }
+            System.out.println();
+        }
     }
 
 }

@@ -17,8 +17,10 @@ public class SudokuCheckerTest {
 
     @Test
     public void testIsCorrect(){
-        sudokuChecker.board[1][4] = 1;
-        sudokuChecker.board[3][4] = 1;
+        sudokuChecker.board[0][2] = 1;
+        sudokuChecker.board[4][2] = 1;
+        assertTrue(sudokuChecker.blocksAreCorrect());
+        assertFalse(sudokuChecker.columnIsCorrect(2));
         assertFalse(sudokuChecker.isCorrect());
     }
 
@@ -90,9 +92,9 @@ public class SudokuCheckerTest {
     @Test
     public void testDifferentRandomRowAndColumn() {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(9);
+        int randomNumber = rand.nextInt(10);
         while(randomNumber == 0) {
-            randomNumber = rand.nextInt(9);
+            randomNumber = rand.nextInt(10);
         }
         int randomRowOfFirst = rand.nextInt(9);
         int randomColumnOfFirst = rand.nextInt(9);
@@ -107,9 +109,11 @@ public class SudokuCheckerTest {
         }
         sudokuChecker.board[randomRowOfSecond][randomColumnOfSecond] = randomNumber;
         if(!sudokuChecker.blocksAreCorrect()) {
+            assertFalse(sudokuChecker.blocksAreCorrect());
             assertFalse(sudokuChecker.isCorrect());
-        }
-        else {
+        } else {
+            sudokuChecker.printSudokuBoard();
+            assertTrue(sudokuChecker.blocksAreCorrect());
             assertTrue(sudokuChecker.isCorrect());
         }
     }
