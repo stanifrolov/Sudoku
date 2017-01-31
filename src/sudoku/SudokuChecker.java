@@ -87,7 +87,7 @@ class SudokuChecker {
                 columnNumberIsValid = columnNumberIsPossible(column, row);
                 columnNumberIsDuplicate = columnNumberIsDuplicate(column, row, appearedColumnNumbers);
                 if (columnNumberIsValid && !columnNumberIsDuplicate) {
-                    int currentColumnNumber = sudokuController.getCellAt(row, column);
+                    int currentColumnNumber = sudokuController.getCellAt(column, row);
                     if (currentColumnNumber != 0)
                         appearedColumnNumbers.add(currentColumnNumber);
                 } else {

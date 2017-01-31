@@ -72,7 +72,8 @@ public class SudokuView extends JFrame {
         int boxNumber;
         for (int i = 0; i < NUMBER_OF_CELLS; i++) {
             cellButtons[i] = new JButton(Integer.toString(i));
-            cellButtons[i].setText(Integer.toString(i));
+//            cellButtons[i].setText(Integer.toString(i));
+            cellButtons[i].setText(" ");
 
             final JPopupMenu menu = new JPopupMenu();
             for (int j = 0; j < NUMBER_OF_POSSIBLE_NUMBERS; j++) {

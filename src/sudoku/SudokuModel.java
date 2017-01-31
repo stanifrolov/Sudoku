@@ -34,16 +34,25 @@ public class SudokuModel {
         sudokuBoard[getRowFromCell(cellNumber)][getColumnFromCell(cellNumber)] = value;
     }
 
-    public int getColumnFromCell(int cellNumber) {
-        return  0;
+    int getColumnFromCell(int cellNumber) {
+        int firstColumnOfBox = getFirstColumnOfBox(getBoxFromCell(cellNumber));
+        return firstColumnOfBox + (cellNumber % 3);
     }
 
-    public int getRowFromCell(int cellNumber) {
-        int box = getBoxFromCell(cellNumber);
-        return box + (cellNumber % 9);
+    int getFirstColumnOfBox(int box) {
+        return (box % 3) + (2*(box % 3));
     }
 
-    public int getBoxFromCell(int cellNumber) {
+    int getRowFromCell(int cellNumber) {
+        int firstRowOfBox = getFirstRowOfBox(getBoxFromCell(cellNumber));
+        return firstRowOfBox + (cellNumber / 3 % 3);
+    }
+
+    int getFirstRowOfBox(int box) {
+        return (box / 3) + (2*(box / 3));
+    }
+
+    int getBoxFromCell(int cellNumber) {
         return cellNumber / 9;
     }
 
