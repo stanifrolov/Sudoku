@@ -8,38 +8,56 @@ import static sudoku.Constants.NUMBER_OF_ROWS;
 
 class SudokuChecker {
 
-    int[][] board = new int[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
-    List<Integer> possibleNumbers = new ArrayList<>();
+    private SudokuController sudokuController;
+    private List<Integer> possibleNumbers = new ArrayList<>();
 
-    SudokuChecker() {
+    SudokuChecker(SudokuController sudokuController) {
+        this.sudokuController = sudokuController;
         setupListOfPossibleNumbers();
     }
 
-    void setupListOfPossibleNumbers() {
+    SudokuChecker() {
+        this.sudokuController = new SudokuController();
+        setupListOfPossibleNumbers();
+    }
+
+    private void setupListOfPossibleNumbers() {
         for (int i = 0; i < 10; i++) {
             this.possibleNumbers.add(i);
         }
     }
 
-    void setupBoard() {
-        Sudoku sudoku = new Sudoku();
-        int cellNumber = 0;
-        for (int i = 0; i < NUMBER_OF_ROWS; i++) {
-            for (int j = 0; j < NUMBER_OF_COLUMNS; j++) {
-                this.board[i][j] = sudoku.getCellValue(cellNumber);
-                cellNumber++;
+    private boolean columnNumberIsDuplicate(int row, int column, List<Integer> appearedColumnNumbers) {
+        return appearedColumnNumbers.contains(sudokuController.getCellAt(row, column));
+    }
+
+    private boolean columnNumberIsPossible(int row, int column) {
+        return this.possibleNumbers.contains(sudokuController.getCellAt(row, column));
+    }
+
+    private boolean rowNumberIsDuplicate(int row, int column, List<Integer> appearedRowNumbers) {
+        return appearedRowNumbers.contains(sudokuController.getCellAt(row, column));
+    }
+
+    private boolean rowNumberIsPossible(int row, int column) {
+        return this.possibleNumbers.contains(sudokuController.getCellAt(row, column));
+    }
+
+    SudokuController getSudokuController() {
+        return sudokuController;
+    }
+
+    void printSudokuBoard() {
+        for (int row = 0; row < NUMBER_OF_ROWS; row++) {
+            for (int column = 0; column < NUMBER_OF_COLUMNS; column++) {
+                System.out.print(sudokuController.getCellAt(row, column));
             }
+            System.out.println();
         }
     }
 
-    void setupBoard(Sudoku sudoku) {
-        int cellNumber = 0;
-        for (int i = 0; i < NUMBER_OF_ROWS; i++) {
-            for (int j = 0; j < NUMBER_OF_COLUMNS; j++) {
-                this.board[i][j] = sudoku.getCellValue(cellNumber);
-                cellNumber++;
-            }
-        }
+    public void setSudokuController(SudokuController sudokuController) {
+        this.sudokuController = sudokuController;
     }
 
     boolean isCorrect() {
@@ -58,8 +76,9 @@ class SudokuChecker {
                 rowNumberIsValid = rowNumberIsPossible(column, row);
                 rowNumberIsDuplicate = rowNumberIsDuplicate(row, column, appearedRowNumbers);
                 if (rowNumberIsValid && !rowNumberIsDuplicate) {
-                    if (this.board[row][column] != 0) {
-                        appearedRowNumbers.add(this.board[row][column]);
+                    int currentRowNumber = sudokuController.getCellAt(row, column);
+                    if (currentRowNumber != 0) {
+                        appearedRowNumbers.add(currentRowNumber);
                     }
                 } else {
                     return false;
@@ -68,8 +87,9 @@ class SudokuChecker {
                 columnNumberIsValid = columnNumberIsPossible(column, row);
                 columnNumberIsDuplicate = columnNumberIsDuplicate(column, row, appearedColumnNumbers);
                 if (columnNumberIsValid && !columnNumberIsDuplicate) {
-                    if (this.board[column][row] != 0)
-                        appearedColumnNumbers.add(this.board[column][row]);
+                    int currentColumnNumber = sudokuController.getCellAt(row, column);
+                    if (currentColumnNumber != 0)
+                        appearedColumnNumbers.add(currentColumnNumber);
                 } else {
                     return false;
                 }
@@ -100,11 +120,12 @@ class SudokuChecker {
         boolean numberIsValid, numberIsDuplicate;
         for (int i = rowStart; i < rowStart + 3; i++) {
             for (int j = columnStart; j < columnStart + 3; j++) {
-                numberIsValid = this.possibleNumbers.contains(this.board[i][j]);
-                numberIsDuplicate = listOfAppearedNumbers.contains(this.board[i][j]);
+                int currentNumber = sudokuController.getCellAt(i, j);
+                numberIsValid = this.possibleNumbers.contains(currentNumber);
+                numberIsDuplicate = listOfAppearedNumbers.contains(currentNumber);
                 if (numberIsValid && !numberIsDuplicate) {
-                    if (this.board[i][j] != 0)
-                        listOfAppearedNumbers.add(this.board[i][j]);
+                    if (currentNumber != 0)
+                        listOfAppearedNumbers.add(currentNumber);
                 } else {
                     return false;
                 }
@@ -120,21 +141,13 @@ class SudokuChecker {
             rowNumberIsValid = rowNumberIsPossible(row, column);
             rowNumberIsDuplicate = rowNumberIsDuplicate(row, column, appearedRowNumbers);
             if (rowNumberIsValid && !rowNumberIsDuplicate) {
-                if (this.board[row][column] != 0)
-                    appearedRowNumbers.add(this.board[row][column]);
+                if (sudokuController.getCellAt(row, column) != 0)
+                    appearedRowNumbers.add(sudokuController.getCellAt(row, column));
             } else {
                 return false;
             }
         }
         return true;
-    }
-
-    boolean rowNumberIsDuplicate(int row, int column, List<Integer> appearedRowNumbers) {
-        return appearedRowNumbers.contains(this.board[row][column]);
-    }
-
-    boolean rowNumberIsPossible(int row, int column) {
-        return this.possibleNumbers.contains(this.board[row][column]);
     }
 
     boolean columnIsCorrect(int column) {
@@ -145,30 +158,13 @@ class SudokuChecker {
             columnNumberIsPossible = columnNumberIsPossible(row, column);
             columnNumberIsDuplicate = columnNumberIsDuplicate(row, column, appearedColumnNumbers);
             if (columnNumberIsPossible && !columnNumberIsDuplicate) {
-                if (this.board[row][column] != 0)
-                    appearedColumnNumbers.add(this.board[row][column]);
+                if (sudokuController.getCellAt(row, column) != 0)
+                    appearedColumnNumbers.add(sudokuController.getCellAt(row, column));
             } else {
                 return false;
             }
         }
         return true;
-    }
-
-    boolean columnNumberIsDuplicate(int row, int column, List<Integer> appearedColumnNumbers) {
-        return appearedColumnNumbers.contains(this.board[row][column]);
-    }
-
-    boolean columnNumberIsPossible(int row, int column) {
-        return this.possibleNumbers.contains(this.board[row][column]);
-    }
-
-    void printSudokuBoard() {
-        for (int row = 0; row < NUMBER_OF_ROWS; row++) {
-            for (int column = 0; column < NUMBER_OF_COLUMNS; column++) {
-                System.out.print(board[row][column]);
-            }
-            System.out.println();
-        }
     }
 
 }
