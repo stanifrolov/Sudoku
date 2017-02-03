@@ -14,6 +14,27 @@ public class SudokuModelTest {
     }
 
     @Test
+    public void testSetCell() {
+        sudokuModel.setCell(0, 9);
+        assertEquals(sudokuModel.getCellAt(0,0), 9);
+
+        sudokuModel.setCell(80, 9);
+        assertEquals(sudokuModel.getCellAt(8,8), 9);
+    }
+
+    @Test
+    public void testSetCellAt() {
+        sudokuModel.setCellAt(0,0, 9);
+        assertEquals(sudokuModel.getCellAt(0,0), 9);
+
+        sudokuModel.setCellAt(8,8, 9);
+        assertEquals(sudokuModel.getCellAt(8,8), 9);
+
+        sudokuModel.setCellAt(8,8, 1);
+        assertEquals(sudokuModel.getCellAt(8,8), 1);
+    }
+
+    @Test
     public void testGetColumnFromCellNumber() {
         assertEquals(sudokuModel.getColumnFromCell(0), 0);
         assertEquals(sudokuModel.getColumnFromCell(57), 0);
@@ -25,21 +46,21 @@ public class SudokuModelTest {
     }
 
     @Test
-    public void testGetFirstColumnOfLastThreeBoxes() throws Exception {
+    public void testGetFirstColumnOfLastThreeBoxes() {
         assertEquals(sudokuModel.getFirstColumnOfBox(6), 0);
         assertEquals(sudokuModel.getFirstColumnOfBox(7), 3);
         assertEquals(sudokuModel.getFirstColumnOfBox(8), 6);
     }
 
     @Test
-    public void testGetFirstColumnOfMiddleThreeBoxes() throws Exception {
+    public void testGetFirstColumnOfMiddleThreeBoxes() {
         assertEquals(sudokuModel.getFirstColumnOfBox(3), 0);
         assertEquals(sudokuModel.getFirstColumnOfBox(4), 3);
         assertEquals(sudokuModel.getFirstColumnOfBox(5), 6);
     }
 
     @Test
-    public void testGetFirstColumnOfFirstThreeBoxes() throws Exception {
+    public void testGetFirstColumnOfFirstThreeBoxes() {
         assertEquals(sudokuModel.getFirstColumnOfBox(0), 0);
         assertEquals(sudokuModel.getFirstColumnOfBox(1), 3);
         assertEquals(sudokuModel.getFirstColumnOfBox(2), 6);
@@ -56,21 +77,21 @@ public class SudokuModelTest {
     }
 
     @Test
-    public void testGetFirstRowOfLastThreeBoxes() throws Exception {
+    public void testGetFirstRowOfLastThreeBoxes() {
         assertEquals(sudokuModel.getFirstRowOfBox(6), 6);
         assertEquals(sudokuModel.getFirstRowOfBox(7), 6);
         assertEquals(sudokuModel.getFirstRowOfBox(8), 6);
     }
 
     @Test
-    public void testGetFirstRowOfMiddleThreeBoxes() throws Exception {
+    public void testGetFirstRowOfMiddleThreeBoxes() {
         assertEquals(sudokuModel.getFirstRowOfBox(3), 3);
         assertEquals(sudokuModel.getFirstRowOfBox(4), 3);
         assertEquals(sudokuModel.getFirstRowOfBox(5), 3);
     }
 
     @Test
-    public void testGetFirstRowOfFirstThreeBoxes() throws Exception {
+    public void testGetFirstRowOfFirstThreeBoxes() {
         assertEquals(sudokuModel.getFirstRowOfBox(0), 0);
         assertEquals(sudokuModel.getFirstRowOfBox(1), 0);
         assertEquals(sudokuModel.getFirstRowOfBox(2), 0);

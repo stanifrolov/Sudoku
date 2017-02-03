@@ -2,22 +2,28 @@ package sudoku;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static sudoku.Constants.*;
 
-public class SudokuView extends JFrame {
+class SudokuView extends JFrame {
 
     static final long serialVersionUID = 1L;
-
     private JPanel gamePanel = new JPanel();
+
     private JPanel sudokuBoardPanel = new JPanel();
+
     private JPanel navigationPanel = new JPanel();
     private JPanel[] sudokuBoxPanel = new JPanel[NUMBER_OF_BOXES];
-
     private JButton checkSudokuButton = new JButton();
     private JButton[] cellButtons = new JButton[NUMBER_OF_CELLS];
+
     private JButton[][] cellDropdownButtons = new JButton[NUMBER_OF_CELLS][NUMBER_OF_POSSIBLE_NUMBERS];
+
+    private static final int DROPDOWN_POS_X = 15;
+    private static final int DROPDOWN_POS_Y = 15;
+    private static final int BOARD_LAYOUT_GAP = 5;
 
     SudokuView() {
         this.setTitle("Sudoku Game");
@@ -39,25 +45,29 @@ public class SudokuView extends JFrame {
         this.getContentPane().add(gamePanel);
     }
 
-    private void setupSudokuBoard() {
-        setupBoxPanel();
-        setupCellButtons();
-    }
-
-    private void setupNavigation() {
-        checkSudokuButton.setText("Check SudokuModel");
-        navigationPanel.add(checkSudokuButton);
-    }
-
     private void setupSudokuBoardPanel() {
         sudokuBoardPanel.setLayout(new GridLayout(ORDER_OF_SUDOKU, ORDER_OF_SUDOKU));
         setSeparationOfBoxes();
+
         gamePanel.add(sudokuBoardPanel);
+    }
+
+    private void setSeparationOfBoxes() {
+        GridLayout sudokuBoardLayout = (GridLayout) sudokuBoardPanel.getLayout();
+
+        sudokuBoardLayout.setHgap(BOARD_LAYOUT_GAP);
+        sudokuBoardLayout.setVgap(BOARD_LAYOUT_GAP);
     }
 
     private void setupNavigationPanel() {
         navigationPanel.setLayout(new GridLayout(5, 1));
+
         gamePanel.add(navigationPanel);
+    }
+
+    private void setupSudokuBoard() {
+        setupBoxPanel();
+        setupCellButtons();
     }
 
     private void setupBoxPanel() {
@@ -69,40 +79,59 @@ public class SudokuView extends JFrame {
     }
 
     private void setupCellButtons() {
-        int boxNumber;
         for (int i = 0; i < NUMBER_OF_CELLS; i++) {
             cellButtons[i] = new JButton(Integer.toString(i));
-//            cellButtons[i].setText(Integer.toString(i));
             cellButtons[i].setText(" ");
 
             final JPopupMenu menu = new JPopupMenu();
-            for (int j = 0; j < NUMBER_OF_POSSIBLE_NUMBERS; j++) {
-                cellDropdownButtons[i][j] = new JButton(Integer.toString(j));
-                cellDropdownButtons[i][j].setText(Integer.toString(j));
-                cellDropdownButtons[i][j].setActionCommand("cellDropdownButton");
-                menu.add(cellDropdownButtons[i][j]);
-                int finalI1 = i;
-                int finalJ = j;
-                cellDropdownButtons[i][j].addActionListener(ev -> {
-                    menu.setVisible(false);
-                    cellButtons[finalI1].setText(Integer.toString(finalJ));
-                });
-            }
+            setupCellDropdownButtons(i, menu);
 
-            int finalI = i;
+            int final_i = i;
             cellButtons[i].addActionListener(ev -> {
-                menu.show(cellButtons[finalI], 15, 15);
+                menu.show(cellButtons[final_i], DROPDOWN_POS_X, DROPDOWN_POS_Y);
             });
 
-            boxNumber = getBoxFromCell(i);
+            int boxNumber = getBoxFromCell(i);
             sudokuBoxPanel[boxNumber].add(cellButtons[i]);
         }
     }
 
-    private void setSeparationOfBoxes() {
-        GridLayout sudokuBoardLayout = (GridLayout) sudokuBoardPanel.getLayout();
-        sudokuBoardLayout.setHgap(5);
-        sudokuBoardLayout.setVgap(5);
+    private void setupCellDropdownButtons(int cell, JPopupMenu menu) {
+        for (int i = 0; i < NUMBER_OF_POSSIBLE_NUMBERS; i++) {
+            cellDropdownButtons[cell][i] = new JButton(Integer.toString(i));
+            cellDropdownButtons[cell][i].setText(Integer.toString(i));
+            cellDropdownButtons[cell][i].setActionCommand("cellDropdownButton");
+            menu.add(cellDropdownButtons[cell][i]);
+
+            int final_i = i;
+            cellDropdownButtons[cell][i].addActionListener((ActionEvent ev) -> {
+                menu.setVisible(false);
+                cellButtons[cell].setText(Integer.toString(final_i));
+            });
+        }
+    }
+
+    private int getBoxFromCell(int cellNumber) {
+        return cellNumber / NUMBER_OF_BOXES;
+    }
+
+    private void setupNavigation() {
+        checkSudokuButton.setText("Check SudokuModel");
+        navigationPanel.add(checkSudokuButton);
+    }
+
+    void addController(ActionListener controller) {
+        checkSudokuButton.addActionListener(controller);
+
+        for (JButton btn : cellButtons) {
+            btn.addActionListener(controller);
+        }
+
+        for (JButton[] cellButton : cellDropdownButtons) {
+            for (JButton btn : cellButton) {
+                btn.addActionListener(controller);
+            }
+        }
     }
 
     void showLayout() {
@@ -110,7 +139,7 @@ public class SudokuView extends JFrame {
         this.setVisible(true);
     }
 
-    public int getCellValue(int cellNumber) {
+    int getCellValue(int cellNumber) {
         String cellValue = getCellText(cellNumber);
         if (!cellValue.equals(" ")) {
             return Integer.parseInt(getCellText(cellNumber));
@@ -119,12 +148,8 @@ public class SudokuView extends JFrame {
         }
     }
 
-    private String getCellText(int cellNumber) {
+    String getCellText(int cellNumber) {
         return cellButtons[cellNumber].getText();
-    }
-
-    private int getBoxFromCell(int cellNumber) {
-        return cellNumber / NUMBER_OF_BOXES;
     }
 
     JButton getCheckSudokuButton() {
@@ -135,20 +160,8 @@ public class SudokuView extends JFrame {
         return cellButtons;
     }
 
-    public JButton[][] getCellDropdownButtons() {
+    JButton[][] getCellDropdownButtons() {
         return cellDropdownButtons;
-    }
-
-    void addController(ActionListener controller) {
-        checkSudokuButton.addActionListener(controller);
-        for (JButton btn : cellButtons) {
-            btn.addActionListener(controller);
-        }
-        for (JButton[] cellButton : cellDropdownButtons) {
-            for (JButton btn : cellButton) {
-                btn.addActionListener(controller);
-            }
-        }
     }
 
 }

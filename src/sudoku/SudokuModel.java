@@ -26,30 +26,30 @@ public class SudokuModel {
         sudokuBoard[row][column] = value;
     }
 
-    int getCellAt(int cellNumber) {
-        return getCellAt(getRowFromCell(cellNumber), getColumnFromCell(cellNumber));
-    }
-
-    void setCellAt(int cellNumber, int value) {
-        sudokuBoard[getRowFromCell(cellNumber)][getColumnFromCell(cellNumber)] = value;
-    }
-
-    int getColumnFromCell(int cellNumber) {
-        int firstColumnOfBox = getFirstColumnOfBox(getBoxFromCell(cellNumber));
-        return firstColumnOfBox + (cellNumber % 3);
-    }
-
-    int getFirstColumnOfBox(int box) {
-        return (box % 3) + (2*(box % 3));
+    void setCell(int cellNumber, int value) {
+        int row = getRowFromCell(cellNumber);
+        int column = getColumnFromCell(cellNumber);
+        sudokuBoard[row][column] = value;
     }
 
     int getRowFromCell(int cellNumber) {
-        int firstRowOfBox = getFirstRowOfBox(getBoxFromCell(cellNumber));
+        int box = getBoxFromCell(cellNumber);
+        int firstRowOfBox = getFirstRowOfBox(box);
         return firstRowOfBox + (cellNumber / 3 % 3);
     }
 
     int getFirstRowOfBox(int box) {
         return (box / 3) + (2*(box / 3));
+    }
+
+    int getColumnFromCell(int cellNumber) {
+        int box = getBoxFromCell(cellNumber);
+        int firstColumnOfBox = getFirstColumnOfBox(box);
+        return firstColumnOfBox + (cellNumber % 3);
+    }
+
+    int getFirstColumnOfBox(int box) {
+        return (box % 3) + (2*(box % 3));
     }
 
     int getBoxFromCell(int cellNumber) {
