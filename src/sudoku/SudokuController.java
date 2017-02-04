@@ -11,11 +11,12 @@ class SudokuController implements ActionListener {
 
     private SudokuModel sudokuModel;
     private SudokuView sudokuView;
-    private SudokuChecker sudokuChecker = new SudokuChecker(this);
+    private SudokuChecker sudokuChecker;
 
     SudokuController() {
         this.sudokuModel = new SudokuModel();
         this.sudokuView = new SudokuView();
+        this.sudokuChecker = new SudokuChecker(this);
 
         this.sudokuView.addController(this);
     }
