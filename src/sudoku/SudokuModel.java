@@ -1,12 +1,19 @@
 package sudoku;
 
+import java.util.Observable;
 import static sudoku.Constants.*;
 
-public class SudokuModel {
+public class SudokuModel extends Observable {
 
     private int[][] sudokuBoard = new int[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
 
     SudokuModel() {
+        this.addObserver(new SudokuView());
+        initSudokuBoard();
+    }
+
+    SudokuModel(SudokuView sudokuView) {
+        this.addObserver(sudokuView);
         initSudokuBoard();
     }
 
@@ -24,12 +31,14 @@ public class SudokuModel {
 
     void setCellAt(int row, int column, int value) {
         sudokuBoard[row][column] = value;
+        this.setChanged();
+        this.notifyObservers();
     }
 
     void setCell(int cellNumber, int value) {
         int row = getRowFromCell(cellNumber);
         int column = getColumnFromCell(cellNumber);
-        sudokuBoard[row][column] = value;
+        setCellAt(row, column, value);
     }
 
     int getRowFromCell(int cellNumber) {

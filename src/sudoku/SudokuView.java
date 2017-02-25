@@ -4,10 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import static sudoku.Constants.*;
 
-class SudokuView extends JFrame {
+class SudokuView extends JFrame implements Observer {
 
     static final long serialVersionUID = 1L;
     private JPanel gamePanel = new JPanel();
@@ -162,6 +164,14 @@ class SudokuView extends JFrame {
 
     JButton[][] getCellDropdownButtons() {
         return cellDropdownButtons;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        // TODO: 25.02.17 Get data from model and update GUI 
+//        int cellNumber = 0;
+//        cellButtons[cellNumber].setText("99");
+//        cellButtons[cellNumber].updateUI();
     }
 
 }
