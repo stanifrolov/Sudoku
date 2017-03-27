@@ -32,7 +32,7 @@ public class SudokuModel extends Observable {
     void setCellAt(int row, int column, int value) {
         sudokuBoard[row][column] = value;
         this.setChanged();
-        this.notifyObservers();
+        this.notifyObservers(new SudokuCell(row, column, value));
     }
 
     void setCell(int cellNumber, int value) {

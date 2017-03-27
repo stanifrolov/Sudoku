@@ -83,7 +83,7 @@ class SudokuView extends JFrame implements Observer {
     private void setupCellButtons() {
         for (int i = 0; i < NUMBER_OF_CELLS; i++) {
             cellButtons[i] = new JButton(Integer.toString(i));
-            cellButtons[i].setText(" ");
+            cellButtons[i].setText(Integer.toString(i));
 
             final JPopupMenu menu = new JPopupMenu();
             setupCellDropdownButtons(i, menu);
@@ -168,10 +168,12 @@ class SudokuView extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        // TODO: 25.02.17 Get data from model and update GUI 
-//        int cellNumber = 0;
-//        cellButtons[cellNumber].setText("99");
-//        cellButtons[cellNumber].updateUI();
+        SudokuCell cell = (SudokuCell) arg;
+        if(((SudokuCell) arg).getValue() == 0){
+            cellButtons[cell.getCellNumber()].setText(" ");
+        } else {
+            cellButtons[cell.getCellNumber()].setText(Integer.toString(cell.getValue()));
+        }
     }
 
 }
